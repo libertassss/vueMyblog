@@ -1,0 +1,16 @@
+.header{
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 .625rem;
+    background: #333333;
+    color: #fff;
+    height: 2.5rem;
+    line-height: 2.5rem;
+}
+.header div span{
+    margin: 0 .375rem;
+}
