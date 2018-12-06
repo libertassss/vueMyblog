@@ -1,0 +1,102 @@
+<template>
+    <div>
+        <el-col :span="3" class="left_nav">
+            <el-menu
+            :default-active="active_item"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose">
+            <el-submenu index="1" class="submenu">
+                <template slot="title">
+                <i class="el-icon-location"></i>
+                <span>用户管理</span>
+                </template>
+                <el-menu-item-group>
+                <el-menu-item class="menu_group" index="1-1" @click="userList">用户列表</el-menu-item>
+                <el-menu-item class="menu_group" index="1-2" @click="userRegister">用户注册</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="2">
+                <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span>文章管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item class="menu_group" index="2-1">文章列表</el-menu-item>
+                    <el-menu-item class="menu_group" index="2-2" @click="category">文章类别</el-menu-item>
+                    <el-menu-item class="menu_group" index="2-3">文章标签</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="3">
+                <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span>评论管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item class="menu_group" index="3-1">评论列表</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+
+            <el-submenu index="4">
+                <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span>网站管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item class="menu_group" index="4-1">导航</el-menu-item>
+                    
+                </el-menu-item-group>
+            </el-submenu>
+            </el-menu>
+        </el-col>
+
+
+
+    </div>
+</template>
+
+<script>
+export default {
+    name:'leftNav',
+    props:{ 
+        active_item:String,
+        required: true
+    },
+    data(){
+        return{
+            
+        }
+    },
+    methods:{
+        handleOpen(key, keyPath) {
+            // console.log(key, keyPath);
+        },
+        handleClose(key, keyPath) {
+            // console.log(key, keyPath);
+        },
+        userRegister(){
+            console.log(this.active_item);
+        },
+        userList(){
+            console.log(this.active_item);
+        },
+        category(){
+            this.$router.push({
+                name:'category'
+            })
+        }
+    },
+   
+}
+</script>
+
+<style scoped>
+    .left_nav{
+        position: fixed;
+        left: 0;
+    }
+    .menu_group{
+        min-width: 0;
+        font-size: .75rem;
+    }
+</style>

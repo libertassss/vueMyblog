@@ -1,113 +1,125 @@
 <template>
     <div class="box">
         <!-- 头部 -->
-       <headerPg></headerPg>
+        <headerPg></headerPg>
         <!-- content -->
         <div class="content">
-            <mu-breadcrumbs class="item_box">
-                <mu-breadcrumbs-item v-for="item in items" :key="item.text" :disabled="item.disabled" class="item">{{item.text}}</mu-breadcrumbs-item>
-            </mu-breadcrumbs>
-            <div class="main_content">
-                <div class="left_nav">
-                    <mu-expansion-panel class="panel_box">
-                        <div slot="header">用户管理</div>
-                        <ul>
-                            <li>用户列表</li>
-                            <li>用户注册</li>
-                        </ul>    
-                    </mu-expansion-panel>
-                    <mu-expansion-panel class="panel_box">
-                        <div slot="header">文章管理</div>
-                        <ul>
-                            <li>文章刘表</li>
-                            <li>编辑文章</li>
-                        </ul>
-                    </mu-expansion-panel>
-                    <mu-expansion-panel class="panel_box">
-                        <div slot="header">评论管理</div>
-                        <ul>
-                            <li>评论列表</li>
-                        </ul>
-                    </mu-expansion-panel>
-                    <mu-expansion-panel class="panel_box">
-                        <div slot="header">网站管理</div>
-                        <ul>
-                            <li>导航</li>
-                            <li>标签</li>
-                            <li>文章类型</li>
-                        </ul>
-                    </mu-expansion-panel>
-                </div>
-                <div class="right_item">
-                    <mu-container>
-                        <mu-paper :z-depth="1">
-                            <mu-data-table border :columns="columns" :sort.sync="sort" @sort-change="handleSortChange" :data="list.slice(0,6)">
-                            <template slot-scope="scope" class="tb_item">
-                                <td>{{scope.row.userNickname}}</td>
-                                <td class="is-right">{{scope.row.userName}}</td>
-                                <td class="is-right">{{scope.row.userEmail}}</td>
-                                <td class="is-right">{{scope.row.userRegisterTime}}</td>
-                                <td class="is-right">{{scope.row.userLastLoginTime}}</td>
-                                <td class="is-right">{{scope.row.userStatus}}</td>
-                            </template>
-                            </mu-data-table>
-                        </mu-paper>
-                    </mu-container> 
-                </div>
+           
+
+            <leftNav :active_item="active_item"></leftNav>
+          
+            
+            <div class="right_content">
+                <el-table class="table_box"
+                    :data="list"
+                    border
+                >
+                 <el-table-column
+                    prop="userId"
+                    label="用户Id"
+                    width="80">
+                    </el-table-column>
+                    <el-table-column
+                    prop="userNickname"
+                    label="昵称"
+                    width="80">
+                    </el-table-column>
+                    <el-table-column
+                    prop="userName"
+                    label="手机号"
+                    width="120">
+                    </el-table-column>
+                    <el-table-column
+                    prop="userEmail"
+                    label="邮箱" width="180">
+                    </el-table-column>
+                    <el-table-column
+                    prop="userStatus"
+                    label="用户状态" width="80">
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            
+                            <el-button
+                            size="mini"
+                            @click="handleDelete(scope.$index, scope.row)">详情</el-button>
+                            <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
+            
         </div>
     </div>
 </template>
 
 <script>
-import headerPg from './commons/headerPg';
+import headerPg from "./commons/headerPg";
+import leftNav from "./commons/leftNav";
 export default {
-    name:'index',
-    components:{
-        headerPg
-    },
-    data(){
-        return{
-            items: [
-                {
-                text: '菜单',
-                disabled: false
-                }
-            ],
-            sort: {
-        name: '',
-        order: 'asc'
+  name: "index",
+  components: {
+    headerPg,
+    leftNav
+  },
+  data() {
+    return {
+        active_item:'1-1',
+        list: [],
+    };
+  },
+  methods: {
+      handleDelete(){
+
       },
-      columns: [
-          { title: '用户名', width:200, name: 'name' },
-          { title: '手机号', name: 'calories', width: 126, align: 'center', sortable: true },
-          { title: '邮箱', name: 'fat', width:126, align: 'center', sortable: true },
-          { title: '注册时间', name: 'carbs', width: 126, align: 'center', sortable: true },
-          { title: '最后登录时间', name: 'protein', width: 126, align: 'center', sortable: true },
-          { title: '用户状态', name: 'iron', width: 126, align: 'center', sortable: true }
-      ],
-      list: []
+   handleEdit(){
+
+   },
+    add_menu() {
+      var data = {
+        menuName: "首页",
+        menuStatus: 1,
+        menuOrder: 1
+      };
+      this.getData(
+        "/insertMenu",
+        data,
+        "post",
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err);
         }
-    },
-    methods:{
-       handleSortChange ({name, order}) {
-        this.list = this.list.sort((a, b) => order === 'asc' ? a[name] - b[name] : b[name] - a[name]);
-        }
-    },
-    mounted(){
-        var data={};
-        this.getData('/selectAllUser',data,'post',(res)=>{
-            console.log(res);
-            if(res.data.code==0){
-                this.list=res.data.data.userInfo;
-            }
-        },(err)=>{
-            console.log(err);
-        })
+      );
     }
-}
+  },
+  mounted() {
+    var data = {};
+    this.getData(
+      "/selectAllUser",
+      data,
+      "post",
+      res => {
+        console.log(res);
+        if (res.data.code == 0) {
+          this.list = res.data.data;
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+};
 </script>
 
 <style scoped>
-    @import url(../../static/css/index.css);
+@import url(../../static/css/index.css);
 </style>

@@ -1,12 +1,27 @@
 <template>
-    <div class="box">
-        <mu-container class="login_form">
-            <mu-text-field class="txt_input" v-model="userName" label="UserName" label-float help-text="用户名为手机号" icon="account_circle"></mu-text-field><br/>
-            <mu-text-field class="txt_input" v-model="userPass" label="Password" label-float error-text="请输入密码" icon="locked" type="password"></mu-text-field><br/>
-            <mu-flex justify-content="center" align-items="center" class="login_btn">
-                <mu-button color="primary"  @click="login" class="btn">登录</mu-button>
-            </mu-flex>
-        </mu-container>
+    <div class="container">
+        <div class="login_form">
+            <div class="demo-input-suffix">
+            <span class="txt">用户名：</span><el-input
+            size="small"
+                placeholder="请输入手机号"
+                prefix-icon="el-icon-phone"
+                v-model="userName">
+                </el-input>
+            </div>
+            <div class="demo-input-suffix">
+            <span class="txt">密码：</span>
+            <el-input
+            size="small"
+                placeholder="请输入密码"
+                prefix-icon="el-icon-phone"
+                v-model="userPass"
+                >
+            </el-input>
+            </div>
+
+            <el-button class="login_btn" size="mini" @click="login">登录</el-button>
+        </div>
     </div>
 </template>
 
@@ -30,9 +45,9 @@ export default {
             };
             this.getData('/Dologin',data,'post',(res)=>{
                 console.log(res);
-                this.$toast.message(res.data.msg);
+                // this.$toast.message(res.data.msg);
                 if(res.data.code==0){
-                    localStorage.setItem("userId",res.data.res.userId);
+                    localStorage.setItem("userId",res.data.data.userId);
                    
                     this.$router.push({
                         name:'index'

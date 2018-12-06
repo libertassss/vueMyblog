@@ -4,17 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import MuseUI from 'muse-ui';
-import 'muse-ui/dist/muse-ui.css';
-import Toast from 'muse-ui-toast';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.use(Toast);
 
-Vue.use(MuseUI);
-
+Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.prototype.$URL = process.env.API_HOST
-Vue.prototype.$toast=Toast;
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 

@@ -1,0 +1,11 @@
+.content{
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: row;
+}
+.left_nav{
+    width: 40%;
+}
+.right_content{
+    width: 60%;
+}
