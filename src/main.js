@@ -27,6 +27,8 @@ Vue.prototype.getData=function(){
   })
 }
 
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
