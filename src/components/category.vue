@@ -52,6 +52,21 @@ export default {
     };
   },
   methods: {
+
+      loadData(){
+          var data={};
+            this.getData('/selectAllCategory',data,"post",(res)=>{
+                console.log(res);
+                if(res.data.code==0){
+                    var len=res.data.data.length;
+                    for(var i=0;i<len;i++){
+                        res.data.data[i].categoryPid+1;
+                        this.data4.push(res.data.data[i]);
+                    }
+                    console.log(this.data4);
+                }
+            },(err)=>{})
+      },
       add_category(){
           var data={
               categoryPid:0,
@@ -90,32 +105,49 @@ export default {
         // });
       },
     append(data) {
-       
+       console.log(data);
         var _this=this;
         var datas={
             categoryName:document.getElementById("categoryName").value,
-            categoryPid:data.categoryId,
+            categoryPid:data.id,
             categoryIcon:document.getElementById("categoryIcon").value,
         };
         console.log(datas);
         this.getData('/insertCategory',datas,"post",(res)=>{
-           
+           console.log(res);
             if(res.data.code==0){
                 const newChild = { categoryPid: categoryPid++, categoryName:document.getElementById("categoryName").value, children: [] };
                 if (!data.children) {
                     this.$set(data, "children", []);
                 }
                 data.children.push(newChild);
+               
             }
         },(err)=>{})
      
     },
 
     remove(node, data) {
-      const parent = node.parent;
-      const children = parent.data.children || parent.data;
-      const index = children.findIndex(d => d.id === data.id);
-      children.splice(index, 1);
+        var arr=[];
+        arr.push(data.id);
+        var len= data.children.length;
+        for(var i=0;i<len;i++){
+            arr.push(data.children[i].id);
+        }
+        console.log(data);
+        var datas={
+            item:arr
+        };
+        console.log(datas);
+        this.getData("/deleteCategoryMall",datas,"post",(res)=>{
+            if(res.data.code==0){
+                const parent = node.parent;
+                const children = parent.data.children || parent.data;
+                const index = children.findIndex(d => d.id === data.id);
+                children.splice(index, 1);
+            }
+        },(err)=>{})
+     
     },
 
     renderContent(h, { node, data, store }) {
@@ -144,18 +176,7 @@ export default {
     }
   },
   mounted(){
-      var data={};
-      this.getData('/selectAllCategory',data,"post",(res)=>{
-          console.log(res);
-          if(res.data.code==0){
-              var len=res.data.data.length;
-              for(var i=0;i<len;i++){
-                  res.data.data[i].categoryPid+1;
-                  this.data4.push(res.data.data[i]);
-              }
-              
-          }
-      },(err)=>{})
+      this.loadData();
   }
 };
 </script>
