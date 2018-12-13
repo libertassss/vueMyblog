@@ -38,14 +38,13 @@
                     label="用户状态" width="80">
                     </el-table-column>
                     <el-table-column label="操作">
+                      
                         <template slot-scope="scope">
                             <el-button
                             size="mini"
                             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                             
-                            <el-button
-                            size="mini"
-                            @click="handleDelete(scope.$index, scope.row)">详情</el-button>
+                            <el-button size="mini" @click="dialogVisible=true">详情</el-button>
                             <el-button
                             size="mini"
                             type="danger"
@@ -54,7 +53,19 @@
                     </el-table-column>
                 </el-table>
             </div>
-            
+             
+             <el-dialog
+              title="详情"
+              :visible.sync="dialogVisible"
+              width="40%"
+              :before-close="handleClose">
+              <span>这是一段信息</span>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+              </span>
+            </el-dialog>
+                      
         </div>
     </div>
 </template>
@@ -72,15 +83,29 @@ export default {
     return {
         active_item:'1-1',
         list: [],
+        dialogVisible:false,
+       
     };
   },
   methods: {
-      handleDelete(){
+      handleClose(done) {
+        done();
+      },
+      handleDelete(index,row){
+        var data={
+          userId:row.userId
+        };
+        console.log(row);
+        this.getData("/deleteUser",data,"post",(res)=>{
+          console.log(res);
+        },(err)=>{})
+      },
+      userDetails(){
 
       },
-   handleEdit(){
+      handleEdit(){
 
-   },
+      },
     add_menu() {
       var data = {
         menuName: "首页",

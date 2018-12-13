@@ -8,6 +8,7 @@
             </div>
             <div class="right_content">
                 <div class="block">
+                    
                     <div class="add_btn">
                         <el-input v-model="input" placeholder="请输入类别名称"></el-input>
                         <el-input v-model="categoryIcon" placeholder="请输入类别名称"></el-input>
@@ -21,6 +22,20 @@
                     :render-content="renderContent">
                     </el-tree>
                 </div>
+
+                <el-dialog
+                    title="添加类别"
+                    :visible.sync="dialogVisible"
+                    width="30%"
+                    :before-close="handleClose">
+                    <el-input size="mini" v-model="categoryName" placeholder="请输入类别名称"></el-input>
+                    <el-input class="txt_input" size="mini" v-model="categoryDescription" placeholder="请输入类别描述"></el-input>
+                    <el-input size="mini" v-model="categoryIcon" placeholder="请输入类别图标"></el-input>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+                        <el-button size="mini" type="primary" @click="dialogVisible = false">确 定</el-button>
+                    </span>
+                </el-dialog>
             </div>
 
            
@@ -47,12 +62,16 @@ export default {
       active_item: "2-2",
       input:'',
       categoryIcon:'',
-      categoryName:''
+      categoryName:'',
+      dialogVisible:false,
+      categoryDescription:""
 
     };
   },
   methods: {
-
+      handleClose(done){
+          done();
+      },    
       loadData(){
           var data={};
             this.getData('/selectAllCategory',data,"post",(res)=>{
@@ -80,37 +99,17 @@ export default {
           this.getData('/insertCategory',data,"post",(res)=>{console.log(res)},(err)=>{})
       },
        open3(data) {
-           var _this=this;
-           var htmlString="<div><input type='text' id='categoryName' placeholder='请输入类别名称'/><input id='categoryIcon' type='text' id='categoryIcon' placeholder='请输入类别icon名称'/></div>";
-            this.$alert(htmlString, '添加类别', {
-                dangerouslyUseHTMLString: true
-            }).then(()=>{
-                _this.append(data);
-            });
-
-        // this.$prompt('请输入类别名称', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        // }).then(({ value }) => {
-        //     this.append(data,value);
-        // //   this.$message({
-        // //     type: 'success',
-        // //     message: '你的邮箱是: ' + value
-        // //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '取消输入'
-        //   });       
-        // });
+          this.dialogVisible=true;
+          this.append(data);
       },
     append(data) {
        console.log(data);
         var _this=this;
         var datas={
-            categoryName:document.getElementById("categoryName").value,
+            categoryName:this.categoryName,
+            categoryDescription:this.categoryDescription,
             categoryPid:data.id,
-            categoryIcon:document.getElementById("categoryIcon").value,
+            categoryIcon:this.categoryIcon
         };
         console.log(datas);
         this.getData('/insertCategory',datas,"post",(res)=>{

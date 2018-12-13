@@ -5,6 +5,7 @@
 }
 .left_nav{
     width: 15%;
+    z-index: 999;
 }
 .right_content{
     width: 85%;
@@ -41,4 +42,7 @@
     width: 178px;
     height: 178px;
     display: block;
+  }
+  .txt_input{
+      margin: .375rem 0;
   }

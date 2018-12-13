@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import index from '@/components/index'
 import login from '@/components/login'
 import category from '@/components/category'
+import editeArticle from '@/components/editeArticle'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
       path:'/category',
       name:'category',
       component:category
+    },
+    {
+      path:'/editeArticle',
+      name:'editeArticle',
+      component:editeArticle
     }
   ]
 })

@@ -79,6 +79,9 @@ export default {
         },
         userList(){
             console.log(this.active_item);
+            this.$router.push({
+                name:'index'
+            })
         },
         category(){
             this.$router.push({
