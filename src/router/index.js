@@ -4,6 +4,8 @@ import index from '@/components/index'
 import login from '@/components/login'
 import category from '@/components/category'
 import editeArticle from '@/components/editeArticle'
+import tagList from '@/components/tagList'
+import articleList from '@/components/articleList'
 
 Vue.use(Router)
 
@@ -33,6 +35,16 @@ export default new Router({
       path:'/editeArticle',
       name:'editeArticle',
       component:editeArticle
+    },
+    {
+      path:'/tagList',
+      name:'tagList',
+      component:tagList
+    },
+    {
+      path:'/articleList',
+      name:'articleList',
+      component:articleList
     }
   ]
 })

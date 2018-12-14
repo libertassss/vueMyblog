@@ -32,8 +32,8 @@
                     <el-input class="txt_input" size="mini" v-model="categoryDescription" placeholder="请输入类别描述"></el-input>
                     <el-input size="mini" v-model="categoryIcon" placeholder="请输入类别图标"></el-input>
                     <span slot="footer" class="dialog-footer">
-                        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-                        <el-button size="mini" type="primary" @click="dialogVisible = false">确 定</el-button>
+                        <el-button size="mini" @click="close">取 消</el-button>
+                        <el-button size="mini" type="primary" @click="append">确 定</el-button>
                     </span>
                 </el-dialog>
             </div>
@@ -69,6 +69,10 @@ export default {
     };
   },
   methods: {
+      close(){
+          this.dialogVisible=false;
+      },
+      
       handleClose(done){
           done();
       },    
@@ -120,7 +124,7 @@ export default {
                     this.$set(data, "children", []);
                 }
                 data.children.push(newChild);
-               
+                this.dialogVisible=false;
             }
         },(err)=>{})
      

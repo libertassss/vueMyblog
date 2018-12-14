@@ -2,7 +2,8 @@
     <div class="container">
         <div class="login_form">
             <div class="demo-input-suffix">
-            <span class="txt">用户名：</span><el-input
+            <span class="txt">用户名：</span>
+            <el-input
             size="small"
                 placeholder="请输入手机号"
                 prefix-icon="el-icon-phone"

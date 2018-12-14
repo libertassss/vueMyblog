@@ -1,11 +1,14 @@
 <template>
-    <div>
+    <div class="box">
         <el-col :span="3" class="left_nav">
             <el-menu
             :default-active="active_item"
             class="el-menu-vertical-demo"
             @open="handleOpen"
-            @close="handleClose">
+            @close="handleClose"
+             background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
             <el-submenu index="1" class="submenu">
                 <template slot="title">
                 <i class="el-icon-location"></i>
@@ -22,9 +25,9 @@
                     <span>文章管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item class="menu_group" index="2-1">文章列表</el-menu-item>
+                    <el-menu-item class="menu_group" index="2-1" @click="articleList">文章列表</el-menu-item>
                     <el-menu-item class="menu_group" index="2-2" @click="category">文章类别</el-menu-item>
-                    <el-menu-item class="menu_group" index="2-3">文章标签</el-menu-item>
+                    <el-menu-item class="menu_group" index="2-3" @click="tagList">文章标签</el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
             <el-submenu index="3">
@@ -87,6 +90,16 @@ export default {
             this.$router.push({
                 name:'category'
             })
+        },
+        tagList(){
+            this.$router.push({
+                name:'tagList'
+            })
+        },
+        articleList(){
+            this.$router.push({
+                name:'articleList'
+            })
         }
     },
    
@@ -94,12 +107,16 @@ export default {
 </script>
 
 <style scoped>
+    .box{
+        width: 100%;
+        left: 0;
+    }
     .left_nav{
         position: fixed;
         left: 0;
+        height: 100%;
     }
     .menu_group{
         min-width: 0;
-        font-size: .75rem;
     }
 </style>

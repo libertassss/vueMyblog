@@ -6,23 +6,36 @@
       <div class="content_top"></div>
       <div class="content_bottom">
       <div class="left_nav">
-            <leftNav :active_item="active_item"></leftNav>
+        <leftNav :active_item="active_item"></leftNav>
       </div>
       <div :span="24" class="right_content">
-        <el-form ref="infoForm" :rules="rules">
-          <el-form-item prop="a_detail">
-            <div class="edit_container">
-              <mavonEditor class="editer" v-model="content" ref="md" @imgAdd="$imgAdd"  @change="changeMavon"/>
-            </div>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">确认提交</el-button>
-          </el-form-item>
-        </el-form>
+        <p>
+          文章类别:
+          <el-select v-model="inputValue" placeholder="请选择" @change="getValue" value-key="categoryId">
+            <el-option v-for="optionOne in options" :key="optionOne.categoryName" :label="optionOne.categoryName" :value="optionOne">
+            </el-option>
+          </el-select>
+          文章标签：
+           <el-select v-model="articleTagIds" multiple placeholder="请选择" @change="getValue">
+            <el-option
+              v-for="item in tagData"
+              :key="item.tagName"
+              :label="item.tagName"
+              :value="item.tagId">
+            </el-option>
+          </el-select>
+        </p>
+        <p>
+          文章标题
+          <el-input placeholder="请输入标题" v-model="input1"></el-input>
+        </p>
+          正文
+        <div class="edit_container">
+          <mavonEditor class="editer" v-model="content" ref="md" @imgAdd="$imgAdd"  @change="changeMavon"/>
+        </div>
+        <p><el-button type="primary" class="submit_btn" @click="onSubmit">确认提交</el-button></p>
       </div>
       </div>
-
-
     </div>
      </div> 
 
@@ -37,26 +50,17 @@
     name:'editeArticle',
     data() {
       return {
+        articleTagIds:'',
+        inputValue:null,
+        options:[],
+        input1:'',
+        articleContent:'',
         content:'',
         configs:{
  
         },       
         active_item:'2-1',
-        infoForm: {
-          a_title: '',
-          a_source: '',
-          a_content:'',
-        },
-        
-        //表单验证
-        rules: {
-          a_title: [
-            {required: true, message: '请输入标题', trigger: 'blur'}
-          ],
-          a_content: [
-            {required: true, message: '请输入详细内容', trigger: 'blur'}
-          ]
-        },
+        tagData:[]
       }
     },
     computed: {
@@ -65,11 +69,31 @@
       }
     },
     mounted() {
-      //初始化
+      // 文章类别
+      this.getData("/selectAll",'','post',res=>{
+        console.log(res)
+        if(res.data.code==0){
+          this.options=res.data.data;
+          this.inputValue=(res.data.data)[0];
+        }
+      },err=>{
+
+      });
+      // 文章标签
+      this.getData('/selectAllTags','','post',res=>{
+        console.log(res);
+        if(res.data.code==0){
+          this.tagData=res.data.data;
+        }
+      },err=>{})
     },
     methods: {
-        changeMavon(){
-          console.log(this.content);
+      getValue(){
+        console.log(this.articleTagIds);
+      },
+        changeMavon(value,html){
+          console.log(html);
+          this.articleContent=html;
         },
         $imgAdd(pos, $file){
           console.log($file);
@@ -83,15 +107,19 @@
             }
           },err=>{})
         },
-
-      onEditorReady(editor) {
-      },
       onSubmit() {
+
           var data={
-            articleContentMd:this.content
+            articleContentMd:this.content,
+            articleContent:this.articleContent,
+            articleTitle:this.input1,
+            articleUserId:localStorage.getItem("userId"),
+            articleParentCategoryId:this.inputValue.categoryPid,
+            articleChildCategoryId:this.inputValue.categoryId,
+            articleTagIds:this.articleTagIds.join('')
           };
+          console.log(data);
           this.getData("/insertSelectev",data,'post',res=>{console.log(res)},err=>{});
-       
       }
     },
     components: {
@@ -120,7 +148,18 @@
       margin-top: .625rem;
     }
     .editer{
-        height: 30rem;
+        height: 35rem;
     }
+    .right_content p:nth-child(1){
+      text-align: left;
+    }
+    .right_content p:nth-child(3){
+      width: 100%;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      margin-top: 1.25rem;
+    }
+    
  
 </style>
