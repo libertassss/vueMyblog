@@ -5,9 +5,9 @@
         <!-- content -->
         <div class="content">
            
-
+          <div class="left_nav">
             <leftNav :active_item="active_item"></leftNav>
-          
+          </div>
             
             <div class="right_content">
                 <el-table class="table_box"

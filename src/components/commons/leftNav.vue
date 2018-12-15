@@ -99,7 +99,9 @@ export default {
         articleList(){
             this.$router.push({
                 name:'articleList'
-            })
+            });
+            this.$store.state.Tags=[];
+            this.$store.state.Tags.push({name:'文章列表',type:'info',urlName:'articleList'});
         }
     },
    
@@ -112,8 +114,11 @@ export default {
         left: 0;
     }
     .left_nav{
-        position: fixed;
-        left: 0;
+       width: 12%;
+       position: absolute;
+       height: 100%;
+    }
+    .el-menu-vertical-demo{
         height: 100%;
     }
     .menu_group{

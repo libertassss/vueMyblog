@@ -4,7 +4,7 @@
             <div class="demo-input-suffix">
             <span class="txt">用户名：</span>
             <el-input
-            size="small"
+           
                 placeholder="请输入手机号"
                 prefix-icon="el-icon-phone"
                 v-model="userName">
@@ -13,7 +13,7 @@
             <div class="demo-input-suffix">
             <span class="txt">密码：</span>
             <el-input
-            size="small"
+            
                 placeholder="请输入密码"
                 prefix-icon="el-icon-phone"
                 v-model="userPass"
@@ -21,7 +21,7 @@
             </el-input>
             </div>
 
-            <el-button class="login_btn" size="mini" @click="login">登录</el-button>
+            <el-button class="login_btn"  @click="login">登录</el-button>
         </div>
     </div>
 </template>

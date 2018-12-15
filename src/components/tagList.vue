@@ -4,8 +4,9 @@
         <!-- 头部 -->
         <headerPg></headerPg>
         <div class="content">
-            
-            <leftNav :active_item="active_item"></leftNav>
+            <div class="left_nav">
+                <leftNav :active_item="active_item"></leftNav>
+            </div>
             <div class="right_content">
         <p class="add_btn"><el-button @click="open">新增</el-button></p>    
         <el-table class="table_box" border
@@ -139,18 +140,24 @@ export default {
 <style scoped>
     .content{
         width: 100%;
-        margin-top: 2.5rem;
+        display: flex;
+        flex-direction: row;
+    }
+    .left_nav{
+        width: 12%;
+        margin-right: 1.25rem;
+    }
+    .right_content{
+        width: 80%;
     }
     .table_box{
-        width: 80%;
-        margin-left: 15%;
+        width: 100%;
         font-weight: lighter;
     }
     .txt_input{
         margin-bottom: .375rem;
     }
     .add_btn{
-        margin-left: 15%;
         width: 80%;
         text-align: left;
     }

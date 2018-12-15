@@ -2,14 +2,21 @@
   <div class="box">
        <!-- 头部 -->
         <headerPg></headerPg>
-    <div class="content">
-      <div class="content_top"></div>
-      <div class="content_bottom">
+    <div class="content"> 
       <div class="left_nav">
         <leftNav :active_item="active_item"></leftNav>
       </div>
       <div :span="24" class="right_content">
-        <p>
+        <div class="content_top">
+          <el-tag @close="deleteTag(tag)" @click="go_tag(tag.urlName)"
+            v-for="tag in Newtags"
+            :key="tag.name"
+            closable
+            type="success">
+            {{tag.name}}
+          </el-tag>
+        </div>
+        <p class="article_top">
           文章类别:
           <el-select v-model="inputValue" placeholder="请选择" @change="getValue" value-key="categoryId">
             <el-option v-for="optionOne in options" :key="optionOne.categoryName" :label="optionOne.categoryName" :value="optionOne">
@@ -35,7 +42,7 @@
         </div>
         <p><el-button type="primary" class="submit_btn" @click="onSubmit">确认提交</el-button></p>
       </div>
-      </div>
+     
     </div>
      </div> 
 
@@ -60,12 +67,17 @@
  
         },       
         active_item:'2-1',
-        tagData:[]
+        tagData:[],
+        tags: []
       }
     },
     computed: {
       editor() {
         return this.$refs.myQuillEditor.quill
+      },
+      Newtags(){
+        this.tags= this.$store.state.Tags;
+        return this.tags;
       }
     },
     mounted() {
@@ -88,6 +100,15 @@
       },err=>{})
     },
     methods: {
+       deleteTag(tag){
+        this.$store.state.Tags.splice(this.$store.state.Tags.indexOf(tag),1);
+      },
+      go_tag(urlName){
+        alert(1)
+        this.$router.push({
+          name:'urlName'
+        })
+      },
       getValue(){
         console.log(this.articleTagIds);
       },
@@ -116,7 +137,7 @@
             articleUserId:localStorage.getItem("userId"),
             articleParentCategoryId:this.inputValue.categoryPid,
             articleChildCategoryId:this.inputValue.categoryId,
-            articleTagIds:this.articleTagIds.join('')
+            articleTagIds:this.articleTagIds.join(',')
           };
           console.log(data);
           this.getData("/insertSelectev",data,'post',res=>{console.log(res)},err=>{});
@@ -131,18 +152,20 @@
 </script>
 <style scoped>
     .content{
-      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: row;
     }
    .content_bottom{
         display: flex;
         flex-direction: row;
     }
     .left_nav{
-        width: 15%;
-        z-index: 999;
+      width: 12%;
+      margin-right: 1.25rem;
+      height: 50rem;
     }
     .right_content{
-        width: 70%;
+        width: 80%;
     }
     .edit_container{
       margin-top: .625rem;
@@ -150,16 +173,11 @@
     .editer{
         height: 35rem;
     }
-    .right_content p:nth-child(1){
+    .right_content .article_top{
       text-align: left;
     }
-    .right_content p:nth-child(3){
-      width: 100%;
-      display: flex;
-      justify-content: left;
-      align-items: center;
+   .content_top{
       margin-top: 1.25rem;
-    }
-    
+   }
  
 </style>

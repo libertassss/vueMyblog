@@ -7,6 +7,16 @@
                 <leftNav :active_item="active_item"></leftNav>
             </div>
             <div class="right_content">
+              <div class="content_top">
+                <el-tag class="tag_list" @close="deleteTag(tag)" @click="go_tag(tag.urlName)"
+                  v-for="(tag,index) in Newtags"
+                  :key="index"
+                  closable
+                  type="success">
+                  {{tag.name}}
+                </el-tag>
+              </div>
+               <p class="add_btn"><el-button @click="editeArticle">新增</el-button></p>    
                 <el-table class="table_box"
     :data="articleData"
     style="width: 100%">
@@ -27,6 +37,14 @@
     </el-table-column>
     <el-table-column
       label="文章标题"
+      width="180">
+      <template slot-scope="scope">
+        <i class="el-icon-time"></i>
+        <span style="margin-left: 10px">{{ scope.row.articleTitle }}</span>
+      </template>
+    </el-table-column>
+     <el-table-column
+      label="发布者"
       width="180">
       <template slot-scope="scope">
         <i class="el-icon-time"></i>
@@ -83,27 +101,62 @@ export default {
     data(){
         return{
             active_item:'2-1',
-            articleData:[]
+            articleData:[],
+            tags:[]
         }
     },
+    computed:{
+      Newtags(){
+        this.tags= this.$store.state.Tags;
+        return this.tags;
+      }
+    },
     mounted(){
-
+      
     },
     methods:{
-
+      editeArticle(){
+        this.$router.push({
+          name:'editeArticle'
+        });
+        this.$store.state.Tags.push({name:'新增文章',type:'info',urlName:'editeArticle'});
+      },
+      deleteTag(tag){
+        this.$store.state.Tags.splice(this.$store.state.Tags.indexOf(tag),1);
+      }
     }
 }
 </script>
 
 <style scoped>
     .content{
-        width: 100%;
-        margin-top: 2.5rem;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
     }
-
+    .right_content{
+      width: 70%;
+    }
+    .left_nav{
+      width: 12%;
+      margin-right: 1.25rem;
+    }
     .table_box{
         width: 80%;
-        margin-left: 15%;
         font-weight: lighter;
     }
+    .add_btn{
+        width: 80%;
+        text-align: left;
+    }
+    .content_top{
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+      margin-top: 1.25rem;
+    }
+    .tag_list{
+      text-align: left;
+    }
+    
 </style>

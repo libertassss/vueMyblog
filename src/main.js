@@ -6,9 +6,18 @@ import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import vuex from 'vuex'
 
 
 Vue.use(ElementUI);
+Vue.use(vuex);
+
+var store = new vuex.Store({//store对象
+  state:{
+      Tags:[ ]
+  }
+})
+
 Vue.config.productionTip = false
 Vue.prototype.$URL = process.env.API_HOST
 axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -33,6 +42,7 @@ Vue.prototype.getData=function(){
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
